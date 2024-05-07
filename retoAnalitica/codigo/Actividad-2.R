@@ -3,7 +3,6 @@
 # Jesús Ángel Guzmán Ortega A01799257
 # Julio Cesar Vivas Medina A01749879
 
-
 # Problema 1 --------------------------------------------------------------
 
 x <- 10 # readline("Ingresa valor x: ")
