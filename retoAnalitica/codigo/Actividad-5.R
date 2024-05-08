@@ -8,28 +8,33 @@ library(corrplot)
 library(factoextra)
 library(ggplot2)
 
-# Cargamos el dataset “mtcars” --------------------------------------------
+# Preparación de datos ----------------------------------------------------
+# Cargamos el dataset
 data(mtcars)
 
-# Análisis de K-means -----------------------------------------------------
+# Matriz de correlación
+correlation <- cor(mtcars)
 
 # Escalado de datos
 mtcars_s <- scale(mtcars)
 
-# Instalamos el paquete "factoextra" para poder realizar el análisis de K-means
+# Análisis de Correlación -------------------------------------------------
+corrplot(correlation, method = "ellipse")
+
+# Análisis de K-means ----------------------------------------------------
 km2 <- kmeans(mtcars_s, 2)
 km2
 
-fviz_cluster(km2, data = mtcars_s, geom = "point", ellipse.type = "convex", ellipse = TRUE)
+fviz_cluster(km2, data = mtcars_s, repel = TRUE)
 
 # K-means con 3 clusters
 km3 <- kmeans(mtcars_s, 3)
 km3
 
-fviz_cluster(km3, data = mtcars_s, geom = "point", ellipse.type = "convex", ellipse = TRUE)
+fviz_cluster(km3, data = mtcars_s, repel = TRUE)
 
 # K-means con 4 clusters
 km4 <- kmeans(mtcars_s, 4)
 km4
 
-fviz_cluster(km4, data = mtcars_s, geom = "point", ellipse.type = "convex", ellipse = TRUE)
+fviz_cluster(km4, data = mtcars_s, repel = TRUE)
