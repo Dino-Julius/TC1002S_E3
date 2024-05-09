@@ -90,10 +90,8 @@ cuartiles_co2_hu
 # Revisión de datos
 str(huracanes_pacifico)
 # View(huracanes_pacifico)
-<<<<<<< HEAD
-=======
 
-#5.- analisis por graficas
+#5.- Análisis por gráficas
 
 # 5.1.1 Gráfica la variable WIND
 ggplot(huracanes_pacifico, aes(x = Wind)) +
@@ -178,4 +176,3 @@ plot(huracanes_pacifico$Wind, huracanes_pacifico$CO2,
      xlab = "Viento", 
      ylab = "CO2")
 abline(lm_model3, col = "green")
->>>>>>> ac7bd915a307ce06113f881f141151299cb4865f
