@@ -24,6 +24,9 @@ library(dplyr)
 setwd("/cloud/project/retoAnalitica/codigo")
 huracanes <- read.csv("CasoHuracanesCSV.csv")
 
+# Filtrar los datos del Océano Pacífico Norte
+huracanes_pacifico <- huracanes[huracanes$Ocean == "Pacific", ]
+
 # 3. Exploración de los datos --------------------------------------------
 # 3.1. Identificar el tipo de dato de tres columnas diferentes
 Name_class <- class(huracanes$Name)
@@ -47,14 +50,8 @@ cuartiles_co2
 
 
 # Preparación de datos ----------------------------------------------------
-# Filtrar los datos del Océano Pacífico Norte
-huracanes_pacifico <- huracanes[huracanes$Ocean == "Pacific", ]
-
 # Convertir la columna "Fecha" al tipo de dato de fecha
 huracanes_pacifico$Fecha <- as.Date(huracanes_pacifico$Fecha)
-
-# Filtrar huracanes_pacifico para incluir solo los registros donde el estatus sea "HU"
-# huracanes_pacifico <- filter(huracanes_pacifico, Status == "HU")
 
 # 3.3.1 Eliminar la columna "Population" ya que todos los valores son 0
 huracanes_pacifico <- huracanes_pacifico[, -grep("Population", names(huracanes_pacifico))]
@@ -65,6 +62,9 @@ huracanes_pacifico <- huracanes_pacifico[!(huracanes_pacifico$Wind <= 0 | huraca
 
 # 3.3.2 Eliminar los posibles NA
 huracanes_pacifico <- na.omit(huracanes_pacifico)
+
+# Filtrar huracanes_pacifico para incluir solo los registros donde el estatus sea "HU"
+# huracanes_pacifico <- filter(huracanes_pacifico, Status == "HU")
 
 # Realizar técnicas estadísticas ------------------------------------------
 
@@ -86,4 +86,4 @@ cuartiles_co2
 # 4.3 Emite conclusiones
 # Revisión de datos
 str(huracanes_pacifico)
-View(huracanes_pacifico)
+# View(huracanes_pacifico)
