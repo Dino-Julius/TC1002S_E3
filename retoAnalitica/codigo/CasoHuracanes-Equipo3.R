@@ -98,7 +98,7 @@ ggplot(huracanes_pacifico, aes(x = Wind)) +
 
 # 5.1.2 Gráfica años con la variable WIND
 ggplot(huracanes_pacifico, aes(x = year, y = Wind)) +
-  geom_point(color = "blue") +
+  geom_line(color = "blue") +  # Utiliza líneas
   labs(title = "Tendencia de la Velocidad del Viento por Año",
        x = "Año",
        y = "Velocidad del Viento") +
