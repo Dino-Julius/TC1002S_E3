@@ -3,66 +3,87 @@
 # Jesús Ángel Guzmán Ortega A01799257
 # Julio Cesar Vivas Medina A01749879
 
-# Cambiar directorio de trabajo y cargar el archivo CSV --------------------
 
+# Instalación de liberías -------------------------------------------------
+
+# Instalar el paquete dplyr si no está instalado
+if (!requireNamespace("dplyr", quietly = TRUE)) {
+  install.packages("dplyr")
+}
+
+
+# Liberías
+library(dplyr)
+# install.packages("ggplot2")
+# install.packages("ggmap")
+# install.packages("maps")
+# install.packages("mapdata")
+
+
+# Cargamos los datos
 setwd("/cloud/project/retoAnalitica/codigo")
 huracanes <- read.csv("CasoHuracanesCSV.csv")
 
-# Instalar y cargar librerías ----------------------------------------------
-install.packages("dplyr")
-install.packages("ggplot2")
-install.packages("ggmap")
-install.packages("maps")
-install.packages("mapdata")
+# 3. Exploración de los datos --------------------------------------------
+# 3.1. Identificar el tipo de dato de tres columnas diferentes
+Name_class <- class(huracanes$Name)
+Name_class
 
-# Verificar y tratar los valores nulos -----------------------------------
+Year_class <- class(huracanes$year)
+Year_class
 
-sapply(huracanes, function(x) sum(is.na(x)))
-summary(huracanes)
-View(huracanes)
+Co2_class <- class(huracanes$CO2)
+Co2_class
 
-# obtener todos los valores unicos de la columna Ocean
-unique(huracanes$Ocean)
-unique(huracanes$Name)
-unique(huracanes$Status)
-unique(huracanes$Latitude)
+# 3.2. Valores de los cuartiles de las variables : WIND, PRESSURE, CO2
+cuartiles_wind <- quantile(huracanes_pacifico$Wind, probs = c(0.25, 0.5, 0.75))
+cuartiles_wind
 
+cuartiles_pressure <- quantile(huracanes_pacifico$Pressure, probs = c(0.25, 0.5, 0.75))
+cuartiles_pressure
 
-# Objetivo del análisis ---------------------------------------------------
-
-# El objetivo de este análisis es determinar la cantidad de huracanes que han
-# ocurrido en cada océano y en cada año, así como también determinar la cantidad
-# de huracanes que han ocurrido en cada mes y en cada año.
+cuartiles_co2 <- quantile(huracanes_pacifico$CO2, probs = c(0.25, 0.5, 0.75))
+cuartiles_co2
 
 
-# Identificación de tres tipos de datos de tres columnas diferentes -------
-# 1. Cantidad de huracanes por océano
-class(huracanes$Ocean)
-# 2. Cantidad de huracanes por año
-class(huracanes$year)
-# 3. Cantidad de huracanes por
-class(huracanes$CO2)
+# Preparación de datos ----------------------------------------------------
+# Filtrar los datos del Océano Pacífico Norte
+huracanes_pacifico <- huracanes[huracanes$Ocean == "Pacific", ]
 
-# Preparación de los datos ----------------------------------------
-huracanes$Fecha <- as.Date(huracanes$Fecha, format = "%m/%d/%Y")
-unique(huracanes$Fecha)
-# filtrar la nueva database a una nueva variable donde solo aya huracanes en tipo HU
-huracanes_hu <- huracanes[huracanes$Status == " HU",]
-View(huracanes_hu)
-unique(huracanes_hu$Pressure)
+# Convertir la columna "Fecha" al tipo de dato de fecha
+huracanes_pacifico$Fecha <- as.Date(huracanes_pacifico$Fecha)
 
+# Filtrar huracanes_pacifico para incluir solo los registros donde el estatus sea "HU"
+# huracanes_pacifico <- filter(huracanes_pacifico, Status == "HU")
 
-# Obtención de cutriles ------------------------------------------------------------
-# Cuartiles de la columna Wind
-cuatrilWIND = quantile(huracanes$Wind, probs=c(0.25, 0.5, 0.75))
-cuatrilWIND
-# Cuartiles de la columna Pressure
-cuatrilPress = quantile(huracanes$Pressure, probs=c(0.25, 0.5, 0.75))
-cuatrilPress
-# Cuartiles de la columna CO2
-cuatrilCO2 = quantile(huracanes$CO2, probs=c(0.25, 0.5, 0.75))
-cuatrilCO2
-# Cuartiles de la columna population
-cuatrilPop = quantile(huracanes$population, probs=c(0.25, 0.5, 0.75))
-cuatrilPop
-unique(huracanes$population)
+# 3.3.1 Eliminar la columna "Population" ya que todos los valores son 0
+huracanes_pacifico <- huracanes_pacifico[, -grep("Population", names(huracanes_pacifico))]
+huracanes_pacifico <- huracanes_pacifico[, !(names(huracanes_pacifico) == "Name")]
+
+# 3.3.1 Eliminar los datos que no son reales (-999 en Wind y Pressure)
+huracanes_pacifico <- huracanes_pacifico[!(huracanes_pacifico$Wind <= 0 | huracanes_pacifico$Pressure <= 0), ]
+
+# 3.3.2 Eliminar los posibles NA
+huracanes_pacifico <- na.omit(huracanes_pacifico)
+
+# Realizar técnicas estadísticas ------------------------------------------
+
+# 4.1 Muestra la MEDIA y el PROMEDIO de las variables : WIND y PRESSURE, CO2
+media_wind <- mean(huracanes_pacifico$Wind)
+media_wind
+
+media_pressure <- mean(huracanes_pacifico$Pressure)
+media_pressure
+
+media_co2 <- mean(huracanes_pacifico$CO2)
+media_co2
+
+# 4.2 Indica los valores de los cuartiles de las variables : WIND, PRESSURE, CO2
+cuartiles_wind
+cuartiles_pressure
+cuartiles_co2
+
+# 4.3 Emite conclusiones
+# Revisión de datos
+str(huracanes_pacifico)
+View(huracanes_pacifico)
