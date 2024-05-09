@@ -126,6 +126,22 @@ ggplot(huracanes_pacifico, aes(x = year)) +
   labs(x = "Años", y = "Valor normalizado", title = "CO2 y WIND") +
   scale_color_manual(values = c("blue", "red"), labels = c("CO2", "WIND")) +
   theme_minimal()
+
+# 5.2.1 Generar los cuartiles de la variable CO2
+cuartiles_CO2 <- quantile(huracanes_pacifico$CO2, probs = c(0.25, 0.5, 0.75))
+print("Cuartiles de la variable CO2:")
+print(cuartiles_CO2)
+
+# 5.2.2 Generar los cuartiles de la variable Ocean & CO2
+cuartiles_Ocean_CO2 <- quantile(huracanes_pacifico$`Ocean & CO2`, probs = c(0.25, 0.5, 0.75))
+print("Cuartiles de la variable Ocean & CO2:")
+print(cuartiles_Ocean_CO2)
+
+# Graficar los cuartiles de la variable CO2
+boxplot(huracanes_pacifico$CO2, main = "Diagrama de Caja - CO2", ylab = "CO2", col = "blue")
+
+
+
 #Análisis de datos
 
 #6.1 Prepara los datos
