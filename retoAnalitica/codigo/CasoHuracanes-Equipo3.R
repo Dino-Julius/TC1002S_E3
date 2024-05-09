@@ -147,6 +147,7 @@ boxplot(huracanes_pacifico$CO2, main = "Diagrama de Caja - CO2", ylab = "CO2", c
 #6.1 Prepara los datos
 data_for_cor <- huracanes_pacifico[, c("Wind", "Pressure", "CO2","year","Time","Longitud","Latitude")]
 correlation_matrix <- cor(data_for_cor)
+correlation_matrix
 dataK <- huracanes_pacifico_hu[, c("Wind", "Pressure", "CO2","year")]
 
 #6.2 Gráfica la correlación de los datos
