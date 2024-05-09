@@ -62,7 +62,7 @@ huracanes_pacifico <- huracanes_pacifico[!(huracanes_pacifico$Wind <= 0 | huraca
 huracanes_pacifico <- na.omit(huracanes_pacifico)
 
 # Filtrar huracanes_pacifico para incluir solo los registros donde el estatus sea "HU"
-# huracanes_pacifico <- filter(huracanes_pacifico, Status == "HU")
+huracanes_pacifico_hu <- filter(huracanes_pacifico, Status == " HU")
 
 # Realizar técnicas estadísticas ------------------------------------------
 
@@ -147,16 +147,18 @@ boxplot(huracanes_pacifico$CO2, main = "Diagrama de Caja - CO2", ylab = "CO2", c
 #6.1 Prepara los datos
 data_for_cor <- huracanes_pacifico[, c("Wind", "Pressure", "CO2","year","Time","Longitud","Latitude")]
 correlation_matrix <- cor(data_for_cor)
+dataK <- huracanes_pacifico_hu[, c("Wind", "Pressure", "CO2","year")]
 
 #6.2 Gráfica la correlación de los datos
 corrplot(correlation_matrix, method = "ellipse")
 
 #6.3 Aplica el algoritmo de k-means
-km5 <- kmeans(data_for_cor, 5)
+km5 <- kmeans(dataK, 6)
 km5
 
 #6.3.1 Gráfica los grupos obtenidos mediante el algoritmo de k-means
-fviz_cluster(km5, data = data_for_cor, repel = TRUE, geom = "point", show.clust.cent = FALSE)
+fviz_cluster(km5, data = dataK, repel = TRUE, geom = "point", show.clust.cent = FALSE)
+
 
 #6.4 Obtén la regresión lineal para 3 pares de variables a tu elección
 lm_model1 <- lm(Wind ~ Pressure, data = huracanes_pacifico)
@@ -187,3 +189,5 @@ plot(huracanes_pacifico$Wind, huracanes_pacifico$CO2,
      xlab = "Viento", 
      ylab = "CO2")
 abline(lm_model3, col = "green")
+
+
