@@ -145,8 +145,6 @@ print(cuartiles_Ocean_CO2)
 # Graficar los cuartiles de la variable CO2
 boxplot(huracanes_pacifico$CO2, main = "Diagrama de Caja - CO2", ylab = "CO2", col = "blue")
 
-
-
 #Análisis de datos
 
 #6.1 Prepara los datos
